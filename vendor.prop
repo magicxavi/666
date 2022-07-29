@@ -96,6 +96,8 @@ ro.config.vc_call_vol_steps=7
 # Bluetooth
 persist.vendor.qcom.bluetooth.soc=cherokee
 vendor.qcom.bluetooth.soc=cherokee
+persist.vendor.btstack.enable.twsplus=true 
+persist.vendor.btstack.enable.twsplussho=true
 ro.bluetooth.a2dp_offload.supported=true
 vendor.audio.feature.a2dp_offload.enable=true
 ro.vendor.bluetooth.wipower=false
