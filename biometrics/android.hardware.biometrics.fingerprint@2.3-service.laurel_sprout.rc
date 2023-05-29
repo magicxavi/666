@@ -9,6 +9,8 @@ on boot
     chmod 0700 /sys/class/drm/card0-DSI-1/disp_param
     chown system system /sys/devices/platform/soc/5e00000.qcom,mdss_mdp/drm/card0/card0-DSI-1/disp_param
     chmod 0700 /sys/devices/platform/soc/5e00000.qcom,mdss_mdp/drm/card0/card0-DSI-1/disp_param
+    chown system system /sys/devices/platform/soc/soc:qcom,dsi-display/dimlayer_hbm
+    chmod 0666 /sys/devices/platform/soc/soc:qcom,dsi-display/dimlayer_hbm
 
 on init
     # Goodix fingerprint
