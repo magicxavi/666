@@ -395,6 +395,9 @@ PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_telephony.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_video.xml
 
+PRODUCT_PACKAGES += \
+    android.media.audio.common.types-V2-cpp
+
 # Network
 PRODUCT_PACKAGES += \
     libloc_net_iface \
