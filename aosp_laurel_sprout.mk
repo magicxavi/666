@@ -45,7 +45,8 @@ BUILD_FINGERPRINT := google/redfin/redfin:12/SP1A.211105.003/7757856:user/releas
 
 PRODUCT_PACKAGES += \
     RemovePackages \
-    GalleryGo2
+    GalleryGo2 \
+    Aperture
     
 # ROM Props
 CUSTOM_BUILD_TYPE := OFFICIAL
