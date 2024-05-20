@@ -270,6 +270,9 @@ PRODUCT_PACKAGES += \
     vendor.qti.hardware.display.mapper@2.0.vendor \
     vendor.qti.hardware.display.mapper@4.0.vendor
 
+# Dolby
+$(call inherit-product, vendor/dolby/dolby-product.mk)
+
 # DRM
 PRODUCT_PACKAGES += \
     android.hardware.drm@1.4.vendor \
