@@ -1,2 +1,1 @@
 set_prop(cameraserver, system_prop)
-set_prop(cameraserver, default_prop)
