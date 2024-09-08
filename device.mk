@@ -80,7 +80,10 @@ PRODUCT_PACKAGES += \
     XiaomiSystemUI \
     UdfpsSystemUI \
     RCMSystemUI \
-    RCMFramework
+    RCMFramework \
+    WifiOverlay \
+    TetheringConfigOverlay \
+    LaurelWifiOverlay
 
 PRODUCT_ENFORCE_RRO_TARGETS := *
 
@@ -484,14 +487,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES_DEBUG += \
     update_engine_client
 
-# Wifi
-PRODUCT_PACKAGES += \
-    LaurelWifiOverlay
-
-# Tethering
-PRODUCT_PACKAGES += \
-    TetheringConfigOverlay
-
 # Tetheroffload
 PRODUCT_PACKAGES += \
     ipacm \
@@ -525,7 +520,6 @@ PRODUCT_PACKAGES += \
     libwifi-hal-ctrl \
     libwpa_client \
     wcnss_service \
-    WifiOverlay \
     wpa_supplicant \
     wpa_supplicant.conf
 
