@@ -143,6 +143,7 @@ DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := \
 DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/configs/manifests/manifest.xml
 DEVICE_MATRIX_FILE += hardware/qcom-caf/common/compatibility_matrix.xml
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += $(DEVICE_PATH)/configs/manifests/framework_compatibility_matrix.xml
+DEVICE_FRAMEWORK_MANIFEST_FILE := $(DEVICE_PATH)/configs/manifests/framework_manifest.xml
 
 # LMKD
 TARGET_LMKD_STATS_LOG := true
