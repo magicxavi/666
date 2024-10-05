@@ -75,9 +75,6 @@ public class DozeService extends Service {
         if (DozeUtils.isPickUpEnabled(this)) {
             mPickupSensor.disable();
         }
-        if (DozeUtils.isHandwaveGestureEnabled(this) || DozeUtils.isPocketGestureEnabled(this)) {
-            mProximitySensor.disable();
-        }
         if (DozeUtils.isDozeAutoBrightnessEnabled(this)) {
             mAodSensor.disable();
         }
@@ -88,9 +85,6 @@ public class DozeService extends Service {
             Log.d(TAG, "Display off");
         if (DozeUtils.isPickUpEnabled(this)) {
             mPickupSensor.enable();
-        }
-        if (DozeUtils.isHandwaveGestureEnabled(this) || DozeUtils.isPocketGestureEnabled(this)) {
-            mProximitySensor.enable();
         }
         if (DozeUtils.isDozeAutoBrightnessEnabled(this)) {
             mAodSensor.enable();

@@ -48,7 +48,6 @@ public class DozeSettingsFragment extends PreferenceFragment
     private ListPreference mDozeBrightnessPreference;
     private SwitchPreferenceCompat mWakeOnGesturePreference;
     private SwitchPreferenceCompat mPickUpPreference;
-    private SwitchPreferenceCompat mHandwavePreference;
     private SwitchPreferenceCompat mPocketPreference;
 
     private Handler mHandler = new Handler();
@@ -97,10 +96,6 @@ public class DozeSettingsFragment extends PreferenceFragment
         mPickUpPreference.setEnabled(dozeEnabled);
         mPickUpPreference.setOnPreferenceChangeListener(this);
 
-        mHandwavePreference = (SwitchPreferenceCompat) findPreference(DozeUtils.GESTURE_HAND_WAVE_KEY);
-        mHandwavePreference.setEnabled(dozeEnabled);
-        mHandwavePreference.setOnPreferenceChangeListener(this);
-
         mPocketPreference = (SwitchPreferenceCompat) findPreference(DozeUtils.GESTURE_POCKET_KEY);
         mPocketPreference.setEnabled(dozeEnabled);
         mPocketPreference.setOnPreferenceChangeListener(this);
@@ -135,7 +130,6 @@ public class DozeSettingsFragment extends PreferenceFragment
                 DozeUtils.setDozeMode(DozeUtils.DOZE_BRIGHTNESS_LBM);
             } else {
                 mPickUpPreference.setChecked(false);
-                mHandwavePreference.setChecked(false);
                 mPocketPreference.setChecked(false);
             }
             mDozeBrightnessPreference.setEnabled((Boolean) newValue);
@@ -166,7 +160,6 @@ public class DozeSettingsFragment extends PreferenceFragment
             mDozeBrightnessPreference.setValue(DozeUtils.DOZE_BRIGHTNESS_LBM);
             DozeUtils.updateDozeBrightnessIcon(getContext(), mDozeBrightnessPreference);
             mPickUpPreference.setChecked(false);
-            mHandwavePreference.setChecked(false);
             mPocketPreference.setChecked(false);
         }
         mAlwaysOnDisplayPreference.setEnabled(isChecked);
@@ -174,7 +167,6 @@ public class DozeSettingsFragment extends PreferenceFragment
                 isChecked && DozeUtils.isAlwaysOnEnabled(getActivity()));
         mWakeOnGesturePreference.setEnabled(isChecked);
         mPickUpPreference.setEnabled(isChecked);
-        mHandwavePreference.setEnabled(isChecked);
         mPocketPreference.setEnabled(isChecked);
     }
 
