@@ -47,7 +47,8 @@ BUILD_FINGERPRINT := Xiaomi/laurel_sprout/laurel_sprout:11/RKQ1.200903.002/V12.0
 PRODUCT_PACKAGES += \
     RemovePackages \
     Aperture \
-    Gramophone
+    Gramophone \
+    XiaomiParts
     
 # ROM Props
 CUSTOM_BUILD_TYPE := OFFICIAL
