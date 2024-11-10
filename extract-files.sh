@@ -42,6 +42,10 @@ function blob_fixup() {
         vendor/lib64/libwvhidl.so)
             "${PATCHELF}" --replace-needed "libcrypto.so" "libcrypto-v34.so" "${2}"
             ;;
+        vendor/etc/seccomp_policy/atfwd@2.0.policy)
+            [ "$2" = "" ] && return 0
+            echo 'gettid: 1' >> ${2}
+            ;; 
     esac
 }
 
@@ -73,6 +77,11 @@ done
 if [ -z "${SRC}" ]; then
     SRC="adb"
 fi
+
+        vendor/etc/seccomp_policy/atfwd@2.0.policy)
+            [ "$2" = "" ] && return 0
+            echo 'gettid: 1' >> ${2}
+            ;; 
 
 # Initialize the helper
 setup_vendor "${DEVICE}" "${VENDOR}" "${ANDROID_ROOT}" false "${CLEAN_VENDOR}"
