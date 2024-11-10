@@ -158,10 +158,7 @@ PRODUCT_PACKAGES += \
     android.hardware.bluetooth.audio@2.1-impl \
     android.hardware.bluetooth.audio-impl \
     audio.bluetooth.default \
-    libbluetooth_audio_session \
-    vendor.qti.hardware.bluetooth_audio@2.1.vendor \
-    vendor.qti.hardware.btconfigstore@1.0.vendor \
-    vendor.qti.hardware.btconfigstore@2.0.vendor
+    libbluetooth_audio_session
 
 PRODUCT_PACKAGES += \
     liba2dpoffload \
@@ -193,8 +190,7 @@ PRODUCT_COPY_FILES += \
 
 # ANT+
 PRODUCT_PACKAGES += \
-    AntHalService-Soong \
-    com.dsi.ant@1.0.vendor
+    AntHalService-Soong
 
 # Camera
 $(call inherit-product, vendor/miuicamera/config.mk)
@@ -206,14 +202,10 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.camera.raw.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.raw.xml
 
 PRODUCT_PACKAGES += \
-    android.frameworks.displayservice@1.0.vendor \
     android.hardware.camera.provider@2.4-impl \
     android.hardware.camera.provider@2.4-service \
-    android.hidl.memory.block@1.0.vendor \
-    vendor.qti.hardware.camera.device@1.0.vendor \
     libstdc++_vendor \
-    libcamera2ndk_vendor \
-    libdng_sdk.vendor
+    libcamera2ndk_vendor
 
 PRODUCT_COPY_FILES += \
     prebuilts/vndk/v30/arm64/arch-arm64-armv8-a/shared/vndk-core/android.hardware.camera.common@1.0.so:$(TARGET_COPY_OUT_VENDOR)/lib64/android.hardware.camera.common@1.0.so \
@@ -265,15 +257,6 @@ PRODUCT_PACKAGES += \
     vendor.qti.hardware.display.allocator-service \
     vendor.display.config@1.1
 
-# Display interfaces
-PRODUCT_PACKAGES += \
-    vendor.qti.hardware.display.composer@1.0.vendor \
-    vendor.qti.hardware.display.composer@2.0.vendor \
-    vendor.qti.hardware.display.mapper@1.0.vendor \
-    vendor.qti.hardware.display.mapper@1.1.vendor \
-    vendor.qti.hardware.display.mapper@2.0.vendor \
-    vendor.qti.hardware.display.mapper@4.0.vendor
-
 # Dolby
 $(call inherit-product, vendor/dolby/dolby-product.mk)
 
@@ -300,8 +283,7 @@ PRODUCT_PACKAGES += \
 
 # fwk-detect
 PRODUCT_PACKAGES += \
-    libqti_vndfwk_detect \
-    libqti_vndfwk_detect.vendor
+    libqti_vndfwk_detect
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     ro.vendor.qti.va_aosp.support=1
@@ -487,10 +469,8 @@ PRODUCT_COPY_FILES += \
 # Sensors
 PRODUCT_PACKAGES += \
     android.frameworks.sensorservice@1.0 \
-    android.frameworks.sensorservice@1.0.vendor \
     android.hardware.sensors@2.1-service.multihal \
-    libsensorndkbridge \
-    android.hardware.sensors@2.1.vendor
+    libsensorndkbridge
 
 # Update engine
 PRODUCT_PACKAGES += \
@@ -530,13 +510,9 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_PACKAGES += \
     libfmq \
-    libfmq.vendor \
     libyuv \
-    libyuv.vendor \
     libjpeg \
-    libjpeg.vendor \
-    libexif \
-    libexif.vendor
+    libexif
 
 # Wifi
 PRODUCT_PACKAGES += \
