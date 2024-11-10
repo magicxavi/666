@@ -272,7 +272,8 @@ $(call inherit-product, vendor/dolby/dolby-product.mk)
 # DRM
 PRODUCT_PACKAGES += \
     android.hardware.drm@1.4.vendor \
-    android.hardware.drm-service.clearkey
+    android.hardware.drm-service.clearkey \
+    libcrypto-v33
 
 PRODUCT_PACKAGES += \
     android.hardware.broadcastradio@1.0-impl
