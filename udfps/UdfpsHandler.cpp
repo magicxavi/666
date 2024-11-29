@@ -92,7 +92,7 @@ class LaurelSproutUdfpsHander : public UdfpsHandler {
                 bool fodUi = readBool(fodUiFd);
 
                 mDevice->extCmd(mDevice, COMMAND_NIT, fodUi ? PARAM_NIT_FOD : PARAM_NIT_NONE);
-                if (!fodUi) {
+                if (!fodUi || PARAM_NIT_NONE) { 
                     set(UDFPS_STATUS_PATH, UDFPS_STATUS_OFF);
                 }
             }
