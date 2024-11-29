@@ -99,6 +99,18 @@ class LaurelSproutUdfpsHander : public UdfpsHandler {
         }).detach();
     }
 
+    void preEnroll() {
+        // nothing
+    }
+    
+    void enroll() {
+        // nothing
+    }
+    
+    void postEnroll() {
+        // nothing
+    }
+    
     void onFingerDown(uint32_t /*x*/, uint32_t /*y*/, float /*minor*/, float /*major*/) {
         set(UDFPS_STATUS_PATH, UDFPS_STATUS_ON);
     }
