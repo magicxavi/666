@@ -10,9 +10,9 @@
 #include <aidl/android/hardware/biometrics/fingerprint/BnSession.h>
 #include <aidl/android/hardware/biometrics/fingerprint/ISessionCallback.h>
 #include <android/log.h>
-#include "fingerprint.h"
 #include <hardware/hardware.h>
 #include <log/log.h>
+#include "fingerprint.h"
 
 #include "LockoutTracker.h"
 #include "UdfpsHandler.h"
@@ -22,16 +22,12 @@ using ::aidl::android::hardware::biometrics::common::OperationContext;
 using ::aidl::android::hardware::biometrics::fingerprint::PointerContext;
 using ::aidl::android::hardware::keymaster::HardwareAuthToken;
 
-namespace aidl {
-namespace android {
-namespace hardware {
-namespace biometrics {
-namespace fingerprint {
+namespace aidl::android::hardware::biometrics::fingerprint {
 
 void onClientDeath(void* cookie);
 
 class Session : public BnSession {
-public:
+  public:
     Session(fingerprint_device_t* device, UdfpsHandler* udfpsHandler, int userId,
             std::shared_ptr<ISessionCallback> cb, LockoutTracker lockoutTracker);
     ndk::ScopedAStatus generateChallenge() override;
@@ -40,8 +36,7 @@ public:
                               std::shared_ptr<ICancellationSignal>* out) override;
     ndk::ScopedAStatus authenticate(int64_t operationId,
                                     std::shared_ptr<ICancellationSignal>* out) override;
-    ndk::ScopedAStatus detectInteraction(
-            std::shared_ptr<ICancellationSignal>* out) override;
+    ndk::ScopedAStatus detectInteraction(std::shared_ptr<ICancellationSignal>* out) override;
     ndk::ScopedAStatus enumerateEnrollments() override;
     ndk::ScopedAStatus removeEnrollments(const std::vector<int32_t>& enrollmentIds) override;
     ndk::ScopedAStatus getAuthenticatorId() override;
@@ -52,15 +47,13 @@ public:
                                      float major) override;
     ndk::ScopedAStatus onPointerUp(int32_t pointerId) override;
     ndk::ScopedAStatus onUiReady() override;
-    ndk::ScopedAStatus authenticateWithContext(
-            int64_t operationId, const OperationContext& context,
-            std::shared_ptr<ICancellationSignal>* out) override;
-    ndk::ScopedAStatus enrollWithContext(
-            const HardwareAuthToken& hat, const OperationContext& context,
-            std::shared_ptr<ICancellationSignal>* out) override;
+    ndk::ScopedAStatus authenticateWithContext(int64_t operationId, const OperationContext& context,
+                                               std::shared_ptr<ICancellationSignal>* out) override;
+    ndk::ScopedAStatus enrollWithContext(const HardwareAuthToken& hat,
+                                         const OperationContext& context,
+                                         std::shared_ptr<ICancellationSignal>* out) override;
     ndk::ScopedAStatus detectInteractionWithContext(
-            const OperationContext& context,
-            std::shared_ptr<ICancellationSignal>* out) override;
+            const OperationContext& context, std::shared_ptr<ICancellationSignal>* out) override;
     ndk::ScopedAStatus onPointerDownWithContext(const PointerContext& context) override;
     ndk::ScopedAStatus onPointerUpWithContext(const PointerContext& context) override;
     ndk::ScopedAStatus onContextChanged(const OperationContext& context) override;
@@ -72,12 +65,12 @@ public:
     bool isClosed();
     void notify(const fingerprint_msg_t* msg);
 
-private:
+  private:
     fingerprint_device_t* mDevice;
     LockoutTracker mLockoutTracker;
     bool mClosed = false;
 
-    //static ndk::ScopedAStatus ErrorFilter(int32_t error);
+    // static ndk::ScopedAStatus ErrorFilter(int32_t error);
     static Error VendorErrorFilter(int32_t error, int32_t* vendorCode);
     static AcquiredInfo VendorAcquiredFilter(int32_t info, int32_t* vendorCode);
 
@@ -104,8 +97,4 @@ private:
     UdfpsHandler* mUdfpsHandler;
 };
 
-} // namespace fingerprint
-} // namespace biometrics
-} // namespace hardware
-} // namespace android
-} // namespace aidl
+}  // namespace aidl::android::hardware::biometrics::fingerprint

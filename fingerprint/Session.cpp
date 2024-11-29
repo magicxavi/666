@@ -6,16 +6,12 @@
 
 #include <thread>
 
-#include "Session.h"
 #include "Legacy2Aidl.h"
+#include "Session.h"
 
 #include "CancellationSignal.h"
 
-namespace aidl {
-namespace android {
-namespace hardware {
-namespace biometrics {
-namespace fingerprint {
+namespace aidl::android::hardware::biometrics::fingerprint {
 
 void onClientDeath(void* cookie) {
     ALOGI("FingerprintService has died");
@@ -26,9 +22,12 @@ void onClientDeath(void* cookie) {
 }
 
 Session::Session(fingerprint_device_t* device, UdfpsHandler* udfpsHandler, int userId,
-            std::shared_ptr<ISessionCallback> cb, LockoutTracker lockoutTracker)
-            : mDevice(device), mLockoutTracker(lockoutTracker), mUserId(userId),
-              mCb(cb), mUdfpsHandler(udfpsHandler) {
+                 std::shared_ptr<ISessionCallback> cb, LockoutTracker lockoutTracker)
+    : mDevice(device),
+      mLockoutTracker(lockoutTracker),
+      mUserId(userId),
+      mCb(cb),
+      mUdfpsHandler(udfpsHandler) {
     mDeathRecipient = AIBinder_DeathRecipient_new(onClientDeath);
 
     char path[256];
@@ -38,9 +37,6 @@ Session::Session(fingerprint_device_t* device, UdfpsHandler* udfpsHandler, int u
 
 ndk::ScopedAStatus Session::generateChallenge() {
     uint64_t challenge = mDevice->pre_enroll(mDevice);
-    if (mUdfpsHandler) {
-        mUdfpsHandler->preEnroll();
-    }
     ALOGI("generateChallenge: %ld", challenge);
     mCb->onChallengeGenerated(challenge);
 
@@ -50,9 +46,6 @@ ndk::ScopedAStatus Session::generateChallenge() {
 ndk::ScopedAStatus Session::revokeChallenge(int64_t challenge) {
     ALOGI("revokeChallenge: %ld", challenge);
     mDevice->post_enroll(mDevice);
-    if (mUdfpsHandler) {
-        mUdfpsHandler->postEnroll();
-    }
     mCb->onChallengeRevoked(challenge);
 
     return ndk::ScopedAStatus::ok();
@@ -61,10 +54,6 @@ ndk::ScopedAStatus Session::revokeChallenge(int64_t challenge) {
 ndk::ScopedAStatus Session::enroll(const HardwareAuthToken& hat,
                                    std::shared_ptr<ICancellationSignal>* out) {
     ALOGI("enroll");
-
-    if (mUdfpsHandler) {
-        mUdfpsHandler->enroll();
-    }
 
     hw_auth_token_t authToken;
     translate(hat, authToken);
@@ -314,13 +303,13 @@ AcquiredInfo Session::VendorAcquiredFilter(int32_t info, int32_t* vendorCode) {
 }
 
 bool Session::checkSensorLockout() {
-    LockoutMode lockoutMode = mLockoutTracker.getMode();
-    if (lockoutMode == LockoutMode::PERMANENT) {
+    LockoutTracker::LockoutMode lockoutMode = mLockoutTracker.getMode();
+    if (lockoutMode == LockoutTracker::LockoutMode::kPermanent) {
         ALOGE("Fail: lockout permanent");
         mCb->onLockoutPermanent();
         mIsLockoutTimerAborted = true;
         return true;
-    } else if (lockoutMode == LockoutMode::TIMED) {
+    } else if (lockoutMode == LockoutTracker::LockoutMode::kTimed) {
         int64_t timeLeft = mLockoutTracker.getLockoutTimeLeft();
         ALOGE("Fail: lockout timed: %ld", timeLeft);
         mCb->onLockoutTimed(timeLeft);
@@ -337,8 +326,7 @@ void Session::clearLockout(bool clearAttemptCounter) {
 
 void Session::startLockoutTimer(int64_t timeout) {
     mIsLockoutTimerAborted = false;
-    std::function<void()> action =
-            std::bind(&Session::lockoutTimerExpired, this);
+    std::function<void()> action = std::bind(&Session::lockoutTimerExpired, this);
     std::thread([timeout, action]() {
         std::this_thread::sleep_for(std::chrono::milliseconds(timeout));
         action();
@@ -348,15 +336,14 @@ void Session::startLockoutTimer(int64_t timeout) {
 }
 
 void Session::lockoutTimerExpired() {
-    if (!mIsLockoutTimerAborted)
-        clearLockout(false);
+    if (!mIsLockoutTimerAborted) clearLockout(false);
 
     mIsLockoutTimerStarted = false;
     mIsLockoutTimerAborted = false;
 }
 
 void Session::notify(const fingerprint_msg_t* msg) {
-    //const uint64_t devId = reinterpret_cast<uint64_t>(mDevice);
+    // const uint64_t devId = reinterpret_cast<uint64_t>(mDevice);
     switch (msg->type) {
         case FINGERPRINT_ERROR: {
             int32_t vendorCode = 0;
@@ -372,7 +359,13 @@ void Session::notify(const fingerprint_msg_t* msg) {
             if (mUdfpsHandler) {
                 mUdfpsHandler->onAcquired(static_cast<int32_t>(result), vendorCode);
             }
-            mCb->onAcquired(result, vendorCode);
+            // don't process vendor messages further since frameworks try to disable
+            // udfps display mode on vendor acquired messages but our sensors send a
+            // vendor message during processing...
+            // process only vendor code 22 which is needed for screen off FOD on laurel_sprout
+            if (result != AcquiredInfo::VENDOR || (result == AcquiredInfo::VENDOR && vendorCode == 22)) {
+                mCb->onAcquired(result, vendorCode);
+            }
         } break;
         case FINGERPRINT_TEMPLATE_ENROLLING: {
             ALOGD("onEnrollResult(fid=%d, gid=%d, rem=%d)", msg->data.enroll.finger.fid,
@@ -389,7 +382,7 @@ void Session::notify(const fingerprint_msg_t* msg) {
         } break;
         case FINGERPRINT_AUTHENTICATED: {
             ALOGD("onAuthenticated(fid=%d, gid=%d)", msg->data.authenticated.finger.fid,
-                msg->data.authenticated.finger.gid);
+                  msg->data.authenticated.finger.gid);
             if (msg->data.authenticated.finger.fid != 0) {
                 const hw_auth_token_t hat = msg->data.authenticated.hat;
                 HardwareAuthToken authToken;
@@ -403,7 +396,7 @@ void Session::notify(const fingerprint_msg_t* msg) {
                 checkSensorLockout();
             }
             if (mUdfpsHandler) {
-               mUdfpsHandler->onFingerUp();
+                mUdfpsHandler->onFingerUp();
             }
         } break;
         case FINGERPRINT_TEMPLATE_ENUMERATING: {
@@ -419,8 +412,4 @@ void Session::notify(const fingerprint_msg_t* msg) {
     }
 }
 
-} // namespace fingerprint
-} // namespace biometrics
-} // namespace hardware
-} // namespace android
-} // namespace aidl
+}  // namespace aidl::android::hardware::biometrics::fingerprint

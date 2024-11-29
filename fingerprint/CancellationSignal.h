@@ -10,25 +10,16 @@
 
 #include "Session.h"
 
-using ::aidl::android::hardware::biometrics::common::BnCancellationSignal;
+namespace aidl::android::hardware::biometrics::fingerprint {
 
-namespace aidl {
-namespace android {
-namespace hardware {
-namespace biometrics {
-namespace fingerprint {
-
-class CancellationSignal : public BnCancellationSignal {
-public:
+class CancellationSignal
+    : public ::aidl::android::hardware::biometrics::common::BnCancellationSignal {
+  public:
     CancellationSignal(Session* session);
     ndk::ScopedAStatus cancel() override;
 
-private:
+  private:
     Session* mSession;
 };
 
-} // namespace fingerprint
-} // namespace biometrics
-} // namespace hardware
-} // namespace android
-} // namespace aidl
+}  // namespace aidl::android::hardware::biometrics::fingerprint

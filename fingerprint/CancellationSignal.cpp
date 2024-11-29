@@ -6,22 +6,12 @@
 
 #include "CancellationSignal.h"
 
-namespace aidl {
-namespace android {
-namespace hardware {
-namespace biometrics {
-namespace fingerprint {
+namespace aidl::android::hardware::biometrics::fingerprint {
 
-CancellationSignal::CancellationSignal(Session* session)
-    : mSession(session) {
-}
+CancellationSignal::CancellationSignal(Session* session) : mSession(session) {}
 
 ndk::ScopedAStatus CancellationSignal::cancel() {
     return mSession->cancel();
 }
 
-} // namespace fingerprint
-} // namespace biometrics
-} // namespace hardware
-} // namespace android
-} // namespace aidl
+}  // namespace aidl::android::hardware::biometrics::fingerprint
